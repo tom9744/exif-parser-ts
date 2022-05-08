@@ -1,7 +1,7 @@
 import { COMPONENT_SIZE_BY_FORMAT } from "../../../constants/image-file-directory.constant";
 import { readDataViewAsString } from "../../../utils";
 
-enum TagFormat {
+export enum TagFormat {
   UnsignedByte = 0x01,
   ASCIIString = 0x02,
   UnsignedShort = 0x03,
