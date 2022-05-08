@@ -1,7 +1,7 @@
 import { GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
-import { IFDEntry, IFDPayload } from "./ImageFileDirectory/IFDEntry.model";
+import { IIFDEntry, IFDPayload } from "./ImageFileDirectory/IFDEntry.model";
 import { ImageFileDirectory } from "./ImageFileDirectory/ImageFileDirectory.model";
 
 enum ByteAlign {
@@ -104,7 +104,7 @@ export class ExifData {
     }
   }
 
-  private formatEntries(entries: IFDEntry[]): IFDEntrySummary {
+  private formatEntries(entries: IIFDEntry[]): IFDEntrySummary {
     return entries.reduce((acc, entry) => {
       const tagName = TAG_NAME_BY_TAG_ID[entry.id] ?? "Unknown";
 
@@ -114,7 +114,7 @@ export class ExifData {
     }, {} as IFDEntrySummary);
   }
 
-  private formatGPSEntries(entries: IFDEntry[]): IFDEntrySummary {
+  private formatGPSEntries(entries: IIFDEntry[]): IFDEntrySummary {
     return entries.reduce((acc, { id, payload }) => {
       const tagName = GPS_TAG_NAME_BY_TAG_ID[id];
 
