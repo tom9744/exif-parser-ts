@@ -1,5 +1,22 @@
 import { IFDEntry } from "./IFDEntry.model";
 
+describe("IFDEntry 클래스의 인스턴스를 생성한다.", () => {
+  it("클래스 인스턴스가 정상적으로 생성된다.", () => {
+    const dataView = MockGenerator.asciiString();
+    const instance = new IFDEntry(dataView, 0, false);
+
+    expect(instance).toBeDefined();
+  });
+
+  it("오프셋이 DataView 크기를 초과하는 경우, RangeError 예외를 던진다.", () => {
+    expect(() => {
+      const dataView = MockGenerator.asciiString();
+
+      new IFDEntry(dataView, 60, false);
+    }).toThrowError(RangeError);
+  });
+});
+
 describe("IFD Entry w/ ASCII String Data.", () => {
   let entry: IFDEntry;
 
