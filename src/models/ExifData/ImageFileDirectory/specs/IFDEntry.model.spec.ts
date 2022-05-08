@@ -1,4 +1,4 @@
-import { IFDEntry } from "./IFDEntry.model";
+import { IFDEntry } from "../IFDEntry.model";
 
 describe("IFDEntry 클래스의 인스턴스를 생성한다.", () => {
   it("클래스 인스턴스가 정상적으로 생성된다.", () => {
