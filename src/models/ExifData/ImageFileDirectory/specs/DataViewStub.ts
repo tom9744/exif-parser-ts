@@ -35,10 +35,6 @@ export class DataViewStub {
   }
 
   private setInt8ToEntry(value: number, signed: boolean = false): void {
-    if (this._dataOffset + 1 > this.size) {
-      throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
-    }
-
     if (signed) {
       this._dataView.setInt8(this._entryOffset, value);
     } else {
@@ -48,10 +44,6 @@ export class DataViewStub {
   }
 
   private setInt16ToEntry(value: number, signed: boolean = false): void {
-    if (this._dataOffset + 2 > this.size) {
-      throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
-    }
-
     if (signed) {
       this._dataView.setInt16(this._entryOffset, value);
     } else {
@@ -61,15 +53,16 @@ export class DataViewStub {
   }
 
   private setInt32ToEntry(value: number, signed: boolean = false): void {
-    if (this._dataOffset + 4 > this.size) {
-      throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
-    }
-
     if (signed) {
       this._dataView.setInt32(this._entryOffset, value);
     } else {
       this._dataView.setUint32(this._entryOffset, value);
     }
+    this._entryOffset += 4;
+  }
+
+  private setSingleFloatToEntry(value: number): void {
+    this._dataView.setFloat32(this._entryOffset, value);
     this._entryOffset += 4;
   }
 
@@ -110,6 +103,24 @@ export class DataViewStub {
       this._dataView.setUint32(this._dataOffset, value);
     }
     this._dataOffset += 4;
+  }
+
+  private setSingleFloatToDataArea(value: number): void {
+    if (this._dataOffset + 4 > this.size) {
+      throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
+    }
+
+    this._dataView.setFloat32(this._dataOffset, value);
+    this._dataOffset += 4;
+  }
+
+  private setDoubleFloatToDataArea(value: number): void {
+    if (this._dataOffset + 8 > this.size) {
+      throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
+    }
+
+    this._dataView.setFloat64(this._dataOffset, value);
+    this._dataOffset += 8;
   }
 
   appendStringEntry(tag: number, value: string): this {
@@ -289,6 +300,52 @@ export class DataViewStub {
       this.setInt32ToDataArea(denominator);
     });
 
+    this._currentEntryCount++;
+
+    return this;
+  }
+
+  appendSingleFloatEntry(tag: number, values: number[]): this {
+    if (this._currentEntryCount >= this._maxEntryCount) {
+      throw new RangeError("지정된 엔트리 개수보다 더 많은 엔트리를 추가할 수 없습니다.");
+    }
+
+    const componentCount = values.length;
+
+    this.setInt16ToEntry(tag); // Tag
+    this.setInt16ToEntry(TagFormat.SingleFloat); // Format
+    this.setInt32ToEntry(componentCount); // Component's Count
+
+    const componentSize = COMPONENT_SIZE_BY_FORMAT[TagFormat.SingleFloat]; // 4 Bytes
+    const payloadSize = componentSize * componentCount;
+
+    if (payloadSize > 4) {
+      this.setInt32ToEntry(this._dataOffset - this.BYTE_ALIGN_OFFSET); // NOTE: 데이터 오프셋은 원본 값을 저장한다.
+      values.forEach((value) => this.setSingleFloatToDataArea(value));
+    } else {
+      values.forEach((value) => this.setSingleFloatToEntry(value));
+    }
+
+    this._currentEntryCount++;
+
+    return this;
+  }
+
+  appendDoubleFloatEntry(tag: number, values: number[]): this {
+    if (this._currentEntryCount >= this._maxEntryCount) {
+      throw new RangeError("지정된 엔트리 개수보다 더 많은 엔트리를 추가할 수 없습니다.");
+    }
+
+    const componentCount = values.length;
+
+    this.setInt16ToEntry(tag); // Tag
+    this.setInt16ToEntry(TagFormat.DoubleFloat); // Format
+    this.setInt32ToEntry(componentCount); // Component's Count
+    this.setInt32ToEntry(this._dataOffset - this.BYTE_ALIGN_OFFSET); // NOTE: 데이터 오프셋은 원본 값을 저장한다.
+
+    values.forEach((value) => {
+      this.setDoubleFloatToDataArea(value);
+    });
     this._currentEntryCount++;
 
     return this;
