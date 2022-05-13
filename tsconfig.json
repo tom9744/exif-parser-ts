@@ -3,9 +3,10 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "es2015",
     "rootDir": "./src",
     "outDir": "./dist",
+    "moduleResolution": "node",
 
     "strict": true,
     "noImplicitAny": true,
