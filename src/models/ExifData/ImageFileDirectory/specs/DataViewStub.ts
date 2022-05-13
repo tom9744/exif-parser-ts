@@ -1,5 +1,5 @@
 import { COMPONENT_SIZE_BY_FORMAT } from "../../../../constants/image-file-directory.constant";
-import { TagFormat } from "../IFDEntry.model";
+import { TagFormat } from "../IFDEntryFactory";
 
 export class DataViewStub {
   private readonly BYTE_ALIGN_OFFSET = 10;
