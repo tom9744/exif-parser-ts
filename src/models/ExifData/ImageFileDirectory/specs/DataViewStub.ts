@@ -19,13 +19,13 @@ export class DataViewStub {
     return this._dataView.byteLength;
   }
 
-  constructor(maxEntryCount: number, size: number) {
+  constructor(maxEntryCount: number, size: number, private readonly littleEndian: boolean) {
     if (maxEntryCount * this.BYTES_PER_ENTRY > size) {
       throw new RangeError("DataView의 크기가 지정된 개수의 엔트리를 생성하는데 필요한 최소 크기보다 작습니다.");
     }
 
     this._dataView = new DataView(new ArrayBuffer(this.BYTE_ALIGN_OFFSET + size));
-    this._dataView.setInt16(this.BYTE_ALIGN_OFFSET, maxEntryCount); // NOTE: 최초 2바이트는 엔트리 개수를 저장한다.
+    this._dataView.setInt16(this.BYTE_ALIGN_OFFSET, maxEntryCount, littleEndian); // NOTE: 최초 2바이트는 엔트리 개수를 저장한다.
 
     this._maxEntryCount = maxEntryCount;
     this._currentEntryCount = 0;
@@ -45,24 +45,24 @@ export class DataViewStub {
 
   private setInt16ToEntry(value: number, signed: boolean = false): void {
     if (signed) {
-      this._dataView.setInt16(this._entryOffset, value);
+      this._dataView.setInt16(this._entryOffset, value, this.littleEndian);
     } else {
-      this._dataView.setUint16(this._entryOffset, value);
+      this._dataView.setUint16(this._entryOffset, value, this.littleEndian);
     }
     this._entryOffset += 2;
   }
 
   private setInt32ToEntry(value: number, signed: boolean = false): void {
     if (signed) {
-      this._dataView.setInt32(this._entryOffset, value);
+      this._dataView.setInt32(this._entryOffset, value, this.littleEndian);
     } else {
-      this._dataView.setUint32(this._entryOffset, value);
+      this._dataView.setUint32(this._entryOffset, value, this.littleEndian);
     }
     this._entryOffset += 4;
   }
 
   private setSingleFloatToEntry(value: number): void {
-    this._dataView.setFloat32(this._entryOffset, value);
+    this._dataView.setFloat32(this._entryOffset, value, this.littleEndian);
     this._entryOffset += 4;
   }
 
@@ -85,9 +85,9 @@ export class DataViewStub {
     }
 
     if (signed) {
-      this._dataView.setInt16(this._dataOffset, value);
+      this._dataView.setInt16(this._dataOffset, value, this.littleEndian);
     } else {
-      this._dataView.setUint16(this._dataOffset, value);
+      this._dataView.setUint16(this._dataOffset, value, this.littleEndian);
     }
     this._dataOffset += 2;
   }
@@ -98,9 +98,9 @@ export class DataViewStub {
     }
 
     if (signed) {
-      this._dataView.setInt32(this._dataOffset, value);
+      this._dataView.setInt32(this._dataOffset, value, this.littleEndian);
     } else {
-      this._dataView.setUint32(this._dataOffset, value);
+      this._dataView.setUint32(this._dataOffset, value, this.littleEndian);
     }
     this._dataOffset += 4;
   }
@@ -110,7 +110,7 @@ export class DataViewStub {
       throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
     }
 
-    this._dataView.setFloat32(this._dataOffset, value);
+    this._dataView.setFloat32(this._dataOffset, value, this.littleEndian);
     this._dataOffset += 4;
   }
 
@@ -119,7 +119,7 @@ export class DataViewStub {
       throw new RangeError("지정된 DataView의 크기를 초과했습니다.");
     }
 
-    this._dataView.setFloat64(this._dataOffset, value);
+    this._dataView.setFloat64(this._dataOffset, value, this.littleEndian);
     this._dataOffset += 8;
   }
 
