@@ -6,7 +6,7 @@
   "author": "Junyoung Yang",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./dist && tsc",
+    "build": "npm test && rm -rf ./dist && rollup -c",
     "test": "jest --config jest.config.json"
   },
   "devDependencies": {

@@ -8,7 +8,6 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    // 타입스크립트
     typescript(),
   ],
 };
