@@ -2,11 +2,12 @@
   "name": "typesrcipt-exif-parser",
   "version": "1.0.0",
   "description": "EXIF metadata extractor for typescript",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "author": "Junyoung Yang",
   "license": "MIT",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "npm test && rm -rf ./dist && rollup -c",
+    "build": "npm test && rm -rf ./dist && rollup -c && rm -rf ./dist/types",
     "test": "jest --config jest.config.json"
   },
   "devDependencies": {
@@ -14,6 +15,7 @@
     "@types/jest": "^27.5.0",
     "jest": "^28.0.3",
     "rollup": "^2.74.1",
+    "rollup-plugin-dts": "^4.2.1",
     "ts-jest": "^28.0.1",
     "tslib": "^2.4.0",
     "typescript": "^4.6.4"

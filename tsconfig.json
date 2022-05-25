@@ -5,8 +5,12 @@
     "target": "es6",
     "module": "es2015",
     "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./",
     "moduleResolution": "node",
+
+    "declaration": true,
+    "declarationDir": "./types",
+    "emitDeclarationOnly": true,
 
     "strict": true,
     "noImplicitAny": true,
