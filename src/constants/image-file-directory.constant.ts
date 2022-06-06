@@ -86,7 +86,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0x0150: "DotRange",
   0x0151: "TargetPrinter",
   0x0152: "ExtraSamples",
-  0x0153: "SampleFormat",
   0x0154: "SMinSampleValue",
   0x0155: "SMaxSampleValue",
   0x0156: "TransferRange",
@@ -107,8 +106,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0x01b3: "T82Options",
   0x01b5: "JPEGTables",
   0x0200: "JPEGProc",
-  0x0201: "ThumbnailOffset",
-  0x0202: "ThumbnailLength",
   0x0203: "JPEGRestartInterval",
   0x0205: "JPEGLosslessPredictors",
   0x0206: "JPEGPointTransforms",
@@ -139,8 +136,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0x80e5: "ImageDepth",
   0x80e6: "TileDepth",
   0x827d: "Model2",
-  0x828d: "CFARepeatPatternDim",
-  0x828e: "CFAPattern2",
   0x828f: "BatteryLevel",
   0x8290: "KodakIFD",
   0x8298: "Copyright",
@@ -340,17 +335,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc613: "DNGBackwardVersion",
   0xc614: "UniqueCameraModel",
   0xc615: "LocalizedCameraModel",
-  0xc616: "CFAPlaneColor",
-  0xc617: "CFALayout",
-  0xc618: "LinearizationTable",
-  0xc619: "BlackLevelRepeatDim",
-  0xc61a: "BlackLevel",
-  0xc61b: "BlackLevelDeltaH",
-  0xc61c: "BlackLevelDeltaV",
-  0xc61d: "WhiteLevel",
-  0xc61e: "DefaultScale",
-  0xc61f: "DefaultCropOrigin",
-  0xc620: "DefaultCropSize",
   0xc621: "ColorMatrix1",
   0xc622: "ColorMatrix2",
   0xc623: "CameraCalibration1",
@@ -363,25 +347,19 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc62a: "BaselineExposure",
   0xc62b: "BaselineNoise",
   0xc62c: "BaselineSharpness",
-  0xc62d: "BayerGreenSplit",
   0xc62e: "LinearResponseLimit",
   0xc62f: "CameraSerialNumber",
   0xc630: "DNGLensInfo",
-  0xc631: "ChromaBlurRadius",
-  0xc632: "AntiAliasStrength",
   0xc633: "ShadowScale",
   0xc634: "DNGPrivateData",
   0xc635: "MakerNoteSafety",
   0xc640: "RawImageSegmentation",
   0xc65a: "CalibrationIlluminant1",
   0xc65b: "CalibrationIlluminant2",
-  0xc65c: "BestQualityScale",
   0xc65d: "RawDataUniqueID",
   0xc660: "AliasLayerMetadata",
   0xc68b: "OriginalRawFileName",
   0xc68c: "OriginalRawFileData",
-  0xc68d: "ActiveArea",
-  0xc68e: "MaskedAreas",
   0xc68f: "AsShotICCProfile",
   0xc690: "AsShotPreProfileMatrix",
   0xc691: "CurrentICCProfile",
@@ -393,7 +371,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc6f4: "ProfileCalibrationSig",
   0xc6f5: "ProfileIFD",
   0xc6f6: "AsShotProfileName",
-  0xc6f7: "NoiseReductionApplied",
   0xc6f8: "ProfileName",
   0xc6f9: "ProfileHueSatMapDims",
   0xc6fa: "ProfileHueSatMapData1",
@@ -415,10 +392,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc71f: "RowInterleaveFactor",
   0xc725: "ProfileLookTableDims",
   0xc726: "ProfileLookTableData",
-  0xc740: "OpcodeList1",
-  0xc741: "OpcodeList2",
-  0xc74e: "OpcodeList3",
-  0xc761: "NoiseProfile",
   0xc763: "TimeCodes",
   0xc764: "FrameRate",
   0xc772: "TStop",
@@ -433,7 +406,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc7a6: "DefaultBlackRender",
   0xc7a7: "NewRawImageDigest",
   0xc7a8: "RawToPreviewGain",
-  0xc7b5: "DefaultUserCrop",
   0xea1c: "Padding",
   0xea1d: "OffsetSchema",
   0xfde8: "OwnerName",
@@ -452,6 +424,91 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xfe57: "Smoothness",
   0xfe58: "MoireFilter",
 };
+
+export type SubIFDTag =
+  | "SampleFormat"
+  | "ThumbnailOffset"
+  | "ThumbnailLength"
+  | "VignettingCorrection" // Found in Sony ARW images
+  | "VignettingCorrParams" // Found in Sony ARW images
+  | "ChromaticAberrationCorrection" // Found in Sony ARW images
+  | "ChromaticAberrationCorrParams" // Found in Sony ARW images
+  | "DistortionCorrection" // Found in Sony ARW images
+  | "DistortionCorrParams" // Found in Sony ARW images
+  | "SonyCropTopLeft"
+  | "SonyCropSize"
+  | "CFARepeatPatternDim"
+  | "CFAPattern2"
+  | "CFAPlaneColor"
+  | "CFALayout"
+  | "LinearizationTable"
+  | "BlackLevelRepeatDim"
+  | "BlackLevel"
+  | "BlackLevelDeltaH"
+  | "BlackLevelDeltaV"
+  | "WhiteLevel"
+  | "DefaultScale"
+  | "DefaultCropOrigin"
+  | "DefaultCropSize"
+  | "BayerGreenSplit"
+  | "ChromaBlurRadius"
+  | "AntiAliasStrength"
+  | "BestQualityScale"
+  | "ActiveArea"
+  | "MaskedAreas"
+  | "NoiseReductionApplied"
+  | "OpcodeList1"
+  | "OpcodeList2"
+  | "OpcodeList3"
+  | "NoiseProfile"
+  | "DefaultUserCrop"
+  | "ProfileGainTableMap"
+  | "SemanticName"
+  | "SemanticInstanceIFD"
+  | "MaskSubArea";
+
+export const SUB_IFD_NAME_BY_TAG_ID: Readonly<{ [tagName: number]: SubIFDTag }> = Object.freeze({
+  0x0153: "SampleFormat",
+  0x0201: "ThumbnailOffset",
+  0x0202: "ThumbnailLength",
+  0x7032: "VignettingCorrection",
+  0x7034: "VignettingCorrParams",
+  0x7035: "ChromaticAberrationCorrection",
+  0x7036: "ChromaticAberrationCorrParams",
+  0x7037: "DistortionCorrection",
+  0x7031: "DistortionCorrParams",
+  0x74c7: "SonyCropTopLeft",
+  0x74c8: "SonyCropSize",
+  0x828d: "CFARepeatPatternDim",
+  0x828e: "CFAPattern2",
+  0xc616: "CFAPlaneColor",
+  0xc617: "CFALayout",
+  0xc618: "LinearizationTable",
+  0xc619: "BlackLevelRepeatDim",
+  0xc61a: "BlackLevel",
+  0xc61b: "BlackLevelDeltaH",
+  0xc61c: "BlackLevelDeltaV",
+  0xc61d: "WhiteLevel",
+  0xc61e: "DefaultScale",
+  0xc61f: "DefaultCropOrigin",
+  0xc620: "DefaultCropSize",
+  0xc62d: "BayerGreenSplit",
+  0xc631: "ChromaBlurRadius",
+  0xc632: "AntiAliasStrength",
+  0xc65c: "BestQualityScale",
+  0xc68d: "ActiveArea",
+  0xc68e: "MaskedAreas",
+  0xc6f7: "NoiseReductionApplied",
+  0xc740: "OpcodeList1",
+  0xc741: "OpcodeList2",
+  0xc74e: "OpcodeList3",
+  0xc761: "NoiseProfile",
+  0xc7b5: "DefaultUserCrop",
+  0xcd2d: "ProfileGainTableMap",
+  0xcd2e: "SemanticName",
+  0xcd30: "SemanticInstanceIFD",
+  0xcd38: "MaskSubArea",
+});
 
 export type GPSTag =
   | "GPSVersionID"
