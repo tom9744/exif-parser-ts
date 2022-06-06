@@ -57,10 +57,7 @@ export class ExifData {
   constructor(arrayBuffer: ArrayBuffer, offset: number, length: number) {
     const dataView = new DataView(arrayBuffer.slice(offset, offset + length));
 
-    // NOTE: 실행 순서가 변경되면 안됩니다.
-    this.checkExifHeader(dataView);
-    this.checkByteAlign(dataView);
-    this.checkTagMark(dataView);
+    this.initialize(dataView);
 
     const offsetToIFD0 = dataView.getUint32(14, this._isLittle);
     this._IFD0 = new IFD0(dataView, offsetToIFD0, this._isLittle);
@@ -78,36 +75,42 @@ export class ExifData {
     }
   }
 
-  private checkExifHeader(dataView: DataView): void {
+  private initialize(dataView: DataView): void {
     const exifHeader = readDataViewAsString(dataView, 4, 6);
-
-    if (exifHeader !== "Exif\0\0") {
-      throw new Error(`Invalid EXIF Header! Expected 'Exif\\0\\0', but got '${exifHeader}'.`);
-    }
-  }
-
-  private checkByteAlign(dataView: DataView): void {
     const byteAlign = dataView.getUint16(10);
-
-    if (byteAlign !== ByteAlign.BigEndian && byteAlign !== ByteAlign.LittleEndian) {
-      throw new Error(`Invalid Byte Align! Expected ${ByteAlign.BigEndian} or ${ByteAlign.LittleEndian}, but got ${byteAlign}.`);
-    }
-
-    this._isLittle = byteAlign === ByteAlign.LittleEndian;
-  }
-
-  private checkTagMark(dataView: DataView): void {
     const tagMark = dataView.getUint16(12, this._isLittle);
 
-    if (tagMark !== TagMark.BigEndian && tagMark !== TagMark.LittleEndian) {
-      throw new Error(`Invalid Tag Mark! Expected ${TagMark.BigEndian} or ${TagMark.LittleEndian}, but got ${tagMark}.`);
-    }
+    const checkExifHeader = (): void => {
+      if (exifHeader !== "Exif\0\0") {
+        throw new Error(`Invalid EXIF Header! Expected 'Exif\\0\\0', but got '${exifHeader}'.`);
+      }
+    };
+
+    const checkByteAlign = (): void => {
+      if (byteAlign !== ByteAlign.BigEndian && byteAlign !== ByteAlign.LittleEndian) {
+        throw new Error(`Invalid Byte Align! Expected ${ByteAlign.BigEndian} or ${ByteAlign.LittleEndian}, but got ${byteAlign}.`);
+      }
+
+      this._isLittle = byteAlign === ByteAlign.LittleEndian;
+    };
+
+    const checkTagMark = (): void => {
+      if (tagMark !== TagMark.BigEndian && tagMark !== TagMark.LittleEndian) {
+        throw new Error(`Invalid Tag Mark! Expected ${TagMark.BigEndian} or ${TagMark.LittleEndian}, but got ${tagMark}.`);
+      }
+    };
+
+    // IMPORTANT: 실행 순서가 변경되면 안됩니다.
+    checkExifHeader();
+    checkByteAlign();
+    checkTagMark();
   }
 
   private formatEntries(entries: IIFDEntryModel[]): IFDEntrySummary {
     return entries.reduce((acc, entry) => {
       const tagName = TAG_NAME_BY_TAG_ID[entry.tag] ?? "Unknown";
 
+      // TODO: 각 태그 별 데이터 포매팅
       acc[tagName] = entry.data;
 
       return acc;
@@ -139,6 +142,9 @@ export class ExifData {
           }
           const [degree, minutes, seconds] = [...data];
           acc[tagName] = degree + minutes / 60 + seconds / 3600;
+          break;
+        default:
+          acc[tagName] = data;
           break;
       }
 
