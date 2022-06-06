@@ -1,4 +1,4 @@
-import { GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
+import { GPSTag, GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { isNumberArray, readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
 import { EntryData, IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
@@ -15,6 +15,7 @@ enum TagMark {
 }
 
 type IFDEntrySummary = { [key: string]: EntryData };
+type GPSEntrySummary = { [key in GPSTag]?: EntryData };
 
 /**
  * Reference: https://nightohl.tistory.com/entry/EXIF-Format
@@ -47,7 +48,7 @@ export class ExifData {
     return this.formatEntries(this._EXIF.entries);
   }
 
-  get GPS(): IFDEntrySummary | null {
+  get GPS(): GPSEntrySummary | null {
     if (!this._GPS?.entries) {
       return null;
     }
@@ -117,8 +118,8 @@ export class ExifData {
     }, {} as IFDEntrySummary);
   }
 
-  private formatGPSEntries(entries: IIFDEntryModel[]): IFDEntrySummary {
-    return entries.reduce((acc, { tag, data }) => {
+  private formatGPSEntries(entries: IIFDEntryModel[]): GPSEntrySummary {
+    return entries.reduce<GPSEntrySummary>((acc, { tag, data }) => {
       const tagName = GPS_TAG_NAME_BY_TAG_ID[tag];
 
       if (!tagName) {
@@ -149,6 +150,6 @@ export class ExifData {
       }
 
       return acc;
-    }, {} as IFDEntrySummary);
+    }, {});
   }
 }

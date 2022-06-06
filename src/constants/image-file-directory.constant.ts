@@ -453,7 +453,41 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xfe58: "MoireFilter",
 };
 
-export const GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: string }> = Object.freeze({
+export type GPSTag =
+  | "GPSVersionID"
+  | "GPSLatitudeRef"
+  | "GPSLatitude"
+  | "GPSLongitudeRef"
+  | "GPSLongitude"
+  | "GPSAltitudeRef"
+  | "GPSAltitude"
+  | "GPSTimeStamp"
+  | "GPSSatellites"
+  | "GPSStatus"
+  | "GPSMeasureMode"
+  | "GPSDOP"
+  | "GPSSpeedRef"
+  | "GPSSpeed"
+  | "GPSTrackRef"
+  | "GPSTrack"
+  | "GPSImgDirectionRef"
+  | "GPSImgDirection"
+  | "GPSMapDatum"
+  | "GPSDestLatitudeRef"
+  | "GPSDestLatitude"
+  | "GPSDestLongitudeRef"
+  | "GPSDestLongitude"
+  | "GPSDestBearingRef"
+  | "GPSDestBearing"
+  | "GPSDestDistanceRef"
+  | "GPSDestDistance"
+  | "GPSProcessingMethod"
+  | "GPSAreaInformation"
+  | "GPSDateStamp"
+  | "GPSDifferential"
+  | "GPSHPositioningError";
+
+export const GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: GPSTag }> = Object.freeze({
   0x0000: "GPSVersionID",
   0x0001: "GPSLatitudeRef",
   0x0002: "GPSLatitude",
