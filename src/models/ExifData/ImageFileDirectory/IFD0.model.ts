@@ -1,3 +1,4 @@
+import { isNumber } from "../../../utils";
 import { IIFDEntryModel } from "./IFDEntryFactory";
 import { ImageFileDirectory } from "./ImageFileDirectory.model";
 
@@ -40,20 +41,20 @@ export class IFD0 extends ImageFileDirectory implements IIFD0 {
   private setOffsetToEXIF(): void {
     const targetEntry = this._entries.find((entry) => entry.isExifTag);
 
-    if (!targetEntry) {
+    if (!targetEntry || !isNumber(targetEntry.data)) {
       return;
     }
 
-    this._offsetToEXIF = (targetEntry.data as number) ?? null;
+    this._offsetToEXIF = targetEntry.data ?? null;
   }
 
   private setOffsetToGPS(): void {
     const targetEntry = this._entries.find((entry) => entry.isGpsTag);
 
-    if (!targetEntry) {
+    if (!targetEntry || !isNumber(targetEntry.data)) {
       return;
     }
 
-    this._offsetToGPS = (targetEntry.data as number) ?? null;
+    this._offsetToGPS = targetEntry.data ?? null;
   }
 }

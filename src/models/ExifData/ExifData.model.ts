@@ -1,5 +1,5 @@
 import { GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
-import { readDataViewAsString } from "../../utils";
+import { isNumberArray, readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
 import { EntryData, IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
 import { ImageFileDirectory } from "./ImageFileDirectory/ImageFileDirectory.model";
@@ -124,14 +124,20 @@ export class ExifData {
 
       switch (tagName) {
         case "GPSTimeStamp":
-          const timeStamp = (data as number[]).map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
+          if (!isNumberArray(data)) {
+            break;
+          }
+          const timeStamp = data.map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
           acc[tagName] = timeStamp;
           break;
         case "GPSLongitude":
         case "GPSDestLongitude":
         case "GPSLatitude":
         case "GPSDestLatitude":
-          const [degree, minutes, seconds] = [...(data as number[])];
+          if (!isNumberArray(data)) {
+            break;
+          }
+          const [degree, minutes, seconds] = [...data];
           acc[tagName] = degree + minutes / 60 + seconds / 3600;
           break;
       }
