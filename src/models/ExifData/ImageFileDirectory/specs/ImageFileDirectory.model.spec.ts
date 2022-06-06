@@ -12,9 +12,9 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
 
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
-    expect(imageFileDirectory.entries[0].data).toEqual(["Apple"]);
-    expect(imageFileDirectory.entries[1].data).toEqual(["iOS"]);
-    expect(imageFileDirectory.entries[2].data).toEqual(["iPhone 13 Pro"]);
+    expect(imageFileDirectory.entries[0].data).toEqual("Apple");
+    expect(imageFileDirectory.entries[1].data).toEqual("iOS");
+    expect(imageFileDirectory.entries[2].data).toEqual("iPhone 13 Pro");
   });
 
   it("Signed Short 타입의 데이터를 가진 IFD Entry로 구성된 Image File Directory의 데이터를 읽는다.", () => {
@@ -28,7 +28,7 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
     expect(imageFileDirectory.entries[0].data).toEqual([10, 11, 12, 13, 14, 15]);
-    expect(imageFileDirectory.entries[1].data).toEqual([-10]);
+    expect(imageFileDirectory.entries[1].data).toBe(-10);
     expect(imageFileDirectory.entries[2].data).toEqual([-100, -110, -120, -130]);
   });
 
@@ -43,7 +43,7 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
     expect(imageFileDirectory.entries[0].data).toEqual([286331153, 286331151, 276331158, 246331153, 286331159]);
-    expect(imageFileDirectory.entries[1].data).toEqual([-321]);
+    expect(imageFileDirectory.entries[1].data).toBe(-321);
     expect(imageFileDirectory.entries[2].data).toEqual([-100000, -110000, -120000, -130000]);
   });
 
@@ -57,9 +57,9 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
 
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
-    expect(imageFileDirectory.entries[0].data).toEqual([-0.299]);
-    expect(imageFileDirectory.entries[1].data).toEqual([9.212]);
-    expect(imageFileDirectory.entries[2].data).toEqual([-0.982]);
+    expect(imageFileDirectory.entries[0].data).toBe(-0.299);
+    expect(imageFileDirectory.entries[1].data).toBe(9.212);
+    expect(imageFileDirectory.entries[2].data).toBe(-0.982);
   });
 
   it("Unsigned Short 타입의 데이터를 가진 IFD Entry로 구성된 Image File Directory의 데이터를 읽는다.", () => {
@@ -73,7 +73,7 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
     expect(imageFileDirectory.entries[0].data).toEqual([1000, 1001, 1002, 1003, 1004]);
-    expect(imageFileDirectory.entries[1].data).toEqual([2000]);
+    expect(imageFileDirectory.entries[1].data).toBe(2000);
     expect(imageFileDirectory.entries[2].data).toEqual([3000, 3001, 3002, 3003]);
   });
 
@@ -88,7 +88,7 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
     expect(imageFileDirectory.entries[0].data).toEqual([286331153, 286331151, 276331158, 246331153, 286331159]);
-    expect(imageFileDirectory.entries[1].data).toEqual([1000]);
+    expect(imageFileDirectory.entries[1].data).toBe(1000);
     expect(imageFileDirectory.entries[2].data).toEqual([100000, 110000, 120000, 130000]);
   });
 
@@ -102,9 +102,9 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
 
     const imageFileDirectory = new ImageFileDirectory(dataViewStub.dataView, 0, true);
 
-    expect(imageFileDirectory.entries[0].data).toEqual([91.28]);
-    expect(imageFileDirectory.entries[1].data).toEqual([0.0091]);
-    expect(imageFileDirectory.entries[2].data).toEqual([5585]);
+    expect(imageFileDirectory.entries[0].data).toBe(91.28);
+    expect(imageFileDirectory.entries[1].data).toBe(0.0091);
+    expect(imageFileDirectory.entries[2].data).toBe(5585);
   });
 
   it("Single Float 타입의 데이터를 가진 IFD Entry로 구성된 Image File Directory의 데이터를 읽는다.", () => {
@@ -119,15 +119,15 @@ describe("IFD 클래스의 동작을 테스트한다.", () => {
 
     // NOTE: 자바스크립트 상에서 실수 계산이 정확하지 않으므로, toFixed를 통해 대략적인 값만을 비교합니다.
     const simplifiedResult1 = (imageFileDirectory.entries[0].data as number[]).map((value) => value.toFixed(2));
-    const simplifiedResult2 = (imageFileDirectory.entries[1].data as number[]).map((value) => value.toFixed(2));
+    const simplifiedResult2 = (imageFileDirectory.entries[1].data as number).toFixed(2);
     const simplifiedResult3 = (imageFileDirectory.entries[2].data as number[]).map((value) => value.toFixed(3));
 
     expect(simplifiedResult1).toEqual([91.12, 87.18, -10.11, 12.97].map((value) => value.toFixed(2)));
-    expect(simplifiedResult2).toEqual(["19.09"]);
+    expect(simplifiedResult2).toBe("19.09");
     expect(simplifiedResult3).toEqual([1991.122, 87.185, 10.118, -12.197].map((value) => value.toFixed(3)));
   });
 
-  it("Single Float 타입의 데이터를 가진 IFD Entry로 구성된 Image File Directory의 데이터를 읽는다.", () => {
+  it("Double Float 타입의 데이터를 가진 IFD Entry로 구성된 Image File Directory의 데이터를 읽는다.", () => {
     const dataViewStub = new DataViewStub(2, 100, true);
 
     dataViewStub.appendDoubleFloatEntry(0x0001, [91.12923, -11.18123]).appendDoubleFloatEntry(0x0002, [1991.12112, 87.14478]);

@@ -28,7 +28,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual(["Lorem Ipsum"]);
+      expect(data).toBe("Lorem Ipsum");
     });
 
     it("Signed Short 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {

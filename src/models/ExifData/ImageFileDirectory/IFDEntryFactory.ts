@@ -35,16 +35,18 @@ type FactoryArgs = {
   entryOffset: number;
 };
 
-type RawEntryData = {
+type RawEntry = {
   tag: number;
   format: TagFormat;
   numberOfComponents: number;
   payload: number; // NOET: 실제 데이터 또는 데이터의 위치를 나타내는 오프셋 값
 };
 
+export type EntryData = string | number | number[];
+
 export interface IIFDEntryModel {
   readonly tag: number;
-  readonly data: string[] | number[];
+  readonly data: EntryData;
   get isExifTag(): boolean;
   get isGpsTag(): boolean;
 }
@@ -57,13 +59,13 @@ class IFDEntryModel implements IIFDEntryModel {
     return this.tag === 0x8825;
   }
 
-  constructor(public readonly tag: number, public readonly data: string[] | number[]) {}
+  constructor(public readonly tag: number, public readonly data: EntryData) {}
 }
 
 export class IFDEntryFactory {
   constructor(private readonly littleEndian: boolean) {}
 
-  private readEntry(dataView: DataView, entryOffset: number): RawEntryData {
+  private readEntry(dataView: DataView, entryOffset: number): RawEntry {
     const tag = dataView.getUint16(entryOffset, this.littleEndian);
     const format = dataView.getUint16(entryOffset + 2, this.littleEndian);
     const numberOfComponents = dataView.getUint32(entryOffset + 4, this.littleEndian);
@@ -78,15 +80,15 @@ export class IFDEntryFactory {
     return { tag, format, numberOfComponents, payload };
   }
 
-  private readStringData(dataView: DataView, dataOffset: number, numberOfComponents: number): string[] {
+  private readStringData(dataView: DataView, dataOffset: number, numberOfComponents: number): string {
     const result = readDataViewAsString(dataView, dataOffset, numberOfComponents);
     const firstNullStringIndex = result.indexOf("\0");
 
-    return firstNullStringIndex === -1 ? [result] : [result.substring(0, firstNullStringIndex)];
+    return firstNullStringIndex === -1 ? result : result.substring(0, firstNullStringIndex);
   }
 
-  private readIntData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number[] {
-    return Array(numberOfComponents)
+  private readIntData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number | number[] {
+    const result = Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
         const offset = dataOffset + componentSize * index;
@@ -100,10 +102,12 @@ export class IFDEntryFactory {
             return dataView.getInt32(offset, this.littleEndian);
         }
       });
+
+    return result.length === 1 ? result[0] : result;
   }
 
-  private readUintData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number[] {
-    return Array(numberOfComponents)
+  private readUintData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number | number[] {
+    const result = Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
         const offset = dataOffset + componentSize * index;
@@ -117,10 +121,12 @@ export class IFDEntryFactory {
             return dataView.getUint32(offset, this.littleEndian);
         }
       });
+
+    return result.length === 1 ? result[0] : result;
   }
 
-  private readRationalData(dataView: DataView, dataOffset: number, numberOfComponents: number, signed: boolean): number[] {
-    return Array(numberOfComponents)
+  private readRationalData(dataView: DataView, dataOffset: number, numberOfComponents: number, signed: boolean): number | number[] {
+    const result = Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
         const rationalComponentSize = 8;
@@ -132,10 +138,12 @@ export class IFDEntryFactory {
 
         return numerator / denominator;
       });
+
+    return result.length === 1 ? result[0] : result;
   }
 
-  private readFloatData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 4 | 8): number[] {
-    return Array(numberOfComponents)
+  private readFloatData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 4 | 8): number | number[] {
+    const result = Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
         const offset = dataOffset + componentSize * index;
@@ -147,6 +155,8 @@ export class IFDEntryFactory {
             return dataView.getFloat64(offset, this.littleEndian);
         }
       });
+
+    return result.length === 1 ? result[0] : result;
   }
 
   createEntry({ dataView, entryOffset }: FactoryArgs): IIFDEntryModel {
@@ -157,7 +167,7 @@ export class IFDEntryFactory {
 
     const dataOffset = payloadSize > 4 ? payload + 10 : entryOffset + 8;
 
-    let data: string[] | number[] = [];
+    let data: EntryData = [];
 
     switch (format) {
       case TagFormat.UnsignedByte:
@@ -179,7 +189,7 @@ export class IFDEntryFactory {
         data = this.readUintData(dataView, dataOffset, numberOfComponents, 1);
         break;
       case TagFormat.Undefined:
-        data = [payload.toString()];
+        data = payload.toString();
         break;
       case TagFormat.SignedShort:
         data = this.readIntData(dataView, dataOffset, numberOfComponents, 2);

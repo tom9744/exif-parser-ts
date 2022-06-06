@@ -1,7 +1,7 @@
 import { GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
-import { IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
+import { EntryData, IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
 import { ImageFileDirectory } from "./ImageFileDirectory/ImageFileDirectory.model";
 
 enum ByteAlign {
@@ -14,7 +14,7 @@ enum TagMark {
   LittleEndian = 0x2a00,
 }
 
-type IFDEntrySummary = { [key: string]: string[] | number[] };
+type IFDEntrySummary = { [key: string]: EntryData };
 
 /**
  * Reference: https://nightohl.tistory.com/entry/EXIF-Format
@@ -124,15 +124,15 @@ export class ExifData {
 
       switch (tagName) {
         case "GPSTimeStamp":
-          const timeStamp = data.map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
-          acc[tagName] = [timeStamp];
+          const timeStamp = (data as number[]).map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
+          acc[tagName] = timeStamp;
           break;
         case "GPSLongitude":
         case "GPSDestLongitude":
         case "GPSLatitude":
         case "GPSDestLatitude":
-          const [degree, minutes, seconds] = [...data] as number[];
-          acc[tagName] = [degree + minutes / 60 + seconds / 3600];
+          const [degree, minutes, seconds] = [...(data as number[])];
+          acc[tagName] = degree + minutes / 60 + seconds / 3600;
           break;
       }
 

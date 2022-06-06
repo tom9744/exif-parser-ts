@@ -44,7 +44,7 @@ export class IFD0 extends ImageFileDirectory implements IIFD0 {
       return;
     }
 
-    this._offsetToEXIF = (targetEntry.data as number[])[0] ?? null;
+    this._offsetToEXIF = (targetEntry.data as number) ?? null;
   }
 
   private setOffsetToGPS(): void {
@@ -54,6 +54,6 @@ export class IFD0 extends ImageFileDirectory implements IIFD0 {
       return;
     }
 
-    this._offsetToGPS = (targetEntry.data as number[])[0] ?? null;
+    this._offsetToGPS = (targetEntry.data as number) ?? null;
   }
 }
