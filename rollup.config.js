@@ -8,7 +8,7 @@ const CONFIG = [
     output: {
       file: "./dist/index.js",
       format: "es",
-      sourcemap: true,
+      sourcemap: false,
     },
     plugins: [
       typescript({ tsconfig: './tsconfig.json' }),
