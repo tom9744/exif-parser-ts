@@ -44,7 +44,7 @@ type RawEntryData = {
 
 export interface IIFDEntryModel {
   readonly tag: number;
-  readonly data: string[];
+  readonly data: string[] | number[];
   get isExifTag(): boolean;
   get isGpsTag(): boolean;
 }
@@ -57,7 +57,7 @@ class IFDEntryModel implements IIFDEntryModel {
     return this.tag === 0x8825;
   }
 
-  constructor(public readonly tag: number, public readonly data: string[]) {}
+  constructor(public readonly tag: number, public readonly data: string[] | number[]) {}
 }
 
 export class IFDEntryFactory {
@@ -85,7 +85,7 @@ export class IFDEntryFactory {
     return firstNullStringIndex === -1 ? [result] : [result.substring(0, firstNullStringIndex)];
   }
 
-  private readIntData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): string[] {
+  private readIntData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number[] {
     return Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
@@ -99,11 +99,10 @@ export class IFDEntryFactory {
           case 4:
             return dataView.getInt32(offset, this.littleEndian);
         }
-      })
-      .map((number) => number.toString());
+      });
   }
 
-  private readUintData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): string[] {
+  private readUintData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 1 | 2 | 4): number[] {
     return Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
@@ -117,11 +116,10 @@ export class IFDEntryFactory {
           case 4:
             return dataView.getUint32(offset, this.littleEndian);
         }
-      })
-      .map((number) => number.toString());
+      });
   }
 
-  private readRationalData(dataView: DataView, dataOffset: number, numberOfComponents: number, signed: boolean): string[] {
+  private readRationalData(dataView: DataView, dataOffset: number, numberOfComponents: number, signed: boolean): number[] {
     return Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
@@ -132,11 +130,11 @@ export class IFDEntryFactory {
         const numerator = signed ? dataView.getInt32(numeratorOffset, this.littleEndian) : dataView.getUint32(numeratorOffset, this.littleEndian);
         const denominator = signed ? dataView.getInt32(denominatorOffset, this.littleEndian) : dataView.getUint32(denominatorOffset, this.littleEndian);
 
-        return `${numerator / denominator}`;
+        return numerator / denominator;
       });
   }
 
-  private readFloatData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 4 | 8): string[] {
+  private readFloatData(dataView: DataView, dataOffset: number, numberOfComponents: number, componentSize: 4 | 8): number[] {
     return Array(numberOfComponents)
       .fill("")
       .map((_, index) => {
@@ -148,8 +146,7 @@ export class IFDEntryFactory {
           case 8:
             return dataView.getFloat64(offset, this.littleEndian);
         }
-      })
-      .map((number) => number.toString());
+      });
   }
 
   createEntry({ dataView, entryOffset }: FactoryArgs): IIFDEntryModel {
@@ -160,7 +157,7 @@ export class IFDEntryFactory {
 
     const dataOffset = payloadSize > 4 ? payload + 10 : entryOffset + 8;
 
-    let data: string[] = [];
+    let data: string[] | number[] = [];
 
     switch (format) {
       case TagFormat.UnsignedByte:

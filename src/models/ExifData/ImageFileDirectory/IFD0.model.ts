@@ -1,8 +1,8 @@
-import { IIFDEntry } from "./IFDEntry.model";
+import { IIFDEntryModel } from "./IFDEntryFactory";
 import { ImageFileDirectory } from "./ImageFileDirectory.model";
 
 export interface IIFD0 {
-  entries: IIFDEntry[];
+  entries: IIFDEntryModel[];
   offsetToIFD1: number;
   offsetToEXIF: number | null;
   offsetToGPS: number | null;
@@ -38,22 +38,22 @@ export class IFD0 extends ImageFileDirectory implements IIFD0 {
   }
 
   private setOffsetToEXIF(): void {
-    const exifOffsetEntry = this._entries.find((entry) => entry.isExifOffset);
+    const targetEntry = this._entries.find((entry) => entry.isExifTag);
 
-    if (!exifOffsetEntry) {
+    if (!targetEntry) {
       return;
     }
 
-    this._offsetToEXIF = exifOffsetEntry.payload as number;
+    this._offsetToEXIF = (targetEntry.data as number[])[0] ?? null;
   }
 
   private setOffsetToGPS(): void {
-    const gpsInfoEntry = this._entries.find((entry) => entry.isGPSInfo);
+    const targetEntry = this._entries.find((entry) => entry.isGpsTag);
 
-    if (!gpsInfoEntry) {
+    if (!targetEntry) {
       return;
     }
 
-    this._offsetToGPS = gpsInfoEntry.payload as number;
+    this._offsetToGPS = (targetEntry.data as number[])[0] ?? null;
   }
 }

@@ -28,7 +28,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["Lorem Ipsum"]);
+      expect(data).toEqual(["Lorem Ipsum"]);
     });
 
     it("Signed Short 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -36,7 +36,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["1", "-2", "3", "-4", "5"]);
+      expect(data).toEqual([1, -2, 3, -4, 5]);
     });
 
     it("Unsigned Short 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -44,7 +44,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["1", "2", "3", "4", "5"]);
+      expect(data).toEqual([1, 2, 3, 4, 5]);
     });
 
     it("Signed Long 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -52,7 +52,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["1", "-2", "3", "-4", "5"]);
+      expect(data).toEqual([1, -2, 3, -4, 5]);
     });
 
     it("Unsigned Long 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -60,7 +60,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["1", "2", "3", "4", "5"]);
+      expect(data).toEqual([1, 2, 3, 4, 5]);
     });
 
     it("Signed Rational 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -74,7 +74,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["0.1", "-0.2", "0.3", "-0.4", "0.5"]);
+      expect(data).toEqual([0.1, -0.2, 0.3, -0.4, 0.5]);
     });
 
     it("Unsigned Rational 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -88,7 +88,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["0.1", "0.2", "0.3", "0.4", "0.5"]);
+      expect(data).toEqual([0.1, 0.2, 0.3, 0.4, 0.5]);
     });
 
     it("Single Float 타입의 데이터를 포함하는 IFDEntry 인스턴스를 생성한다.", () => {
@@ -96,7 +96,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      const dataToFixed2 = data.map((value) => parseFloat(value).toFixed(1));
+      const dataToFixed2 = (data as number[]).map((value) => value.toFixed(1));
 
       expect(dataToFixed2).toEqual<string[]>(["0.1", "-0.2", "0.3", "-0.4", "0.5"]);
     });
@@ -106,7 +106,7 @@ describe("IFDEntryFactory의 동작을 테스트한다.", () => {
 
       const { data } = factory.createEntry({ dataView, entryOffset: 12 });
 
-      expect(data).toEqual<string[]>(["0.001", "-0.002", "0.003", "-0.004", "0.005"]);
+      expect(data).toEqual([0.001, -0.002, 0.003, -0.004, 0.005]);
     });
   });
 });

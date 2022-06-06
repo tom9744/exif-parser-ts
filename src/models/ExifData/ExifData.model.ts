@@ -1,7 +1,7 @@
 import { GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
-import { IIFDEntry, IFDPayload } from "./ImageFileDirectory/IFDEntry.model";
+import { IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
 import { ImageFileDirectory } from "./ImageFileDirectory/ImageFileDirectory.model";
 
 enum ByteAlign {
@@ -14,7 +14,7 @@ enum TagMark {
   LittleEndian = 0x2a00,
 }
 
-type IFDEntrySummary = { [key: string]: IFDPayload };
+type IFDEntrySummary = { [key: string]: string[] | number[] };
 
 /**
  * Reference: https://nightohl.tistory.com/entry/EXIF-Format
@@ -104,40 +104,35 @@ export class ExifData {
     }
   }
 
-  private formatEntries(entries: IIFDEntry[]): IFDEntrySummary {
+  private formatEntries(entries: IIFDEntryModel[]): IFDEntrySummary {
     return entries.reduce((acc, entry) => {
-      const tagName = TAG_NAME_BY_TAG_ID[entry.id] ?? "Unknown";
+      const tagName = TAG_NAME_BY_TAG_ID[entry.tag] ?? "Unknown";
 
-      acc[tagName] = entry.payload;
+      acc[tagName] = entry.data;
 
       return acc;
     }, {} as IFDEntrySummary);
   }
 
-  private formatGPSEntries(entries: IIFDEntry[]): IFDEntrySummary {
-    return entries.reduce((acc, { id, payload }) => {
-      const tagName = GPS_TAG_NAME_BY_TAG_ID[id];
+  private formatGPSEntries(entries: IIFDEntryModel[]): IFDEntrySummary {
+    return entries.reduce((acc, { tag, data }) => {
+      const tagName = GPS_TAG_NAME_BY_TAG_ID[tag];
 
       if (!tagName) {
         return acc;
       }
 
-      if (!Array.isArray(payload)) {
-        acc[tagName] = payload;
-        return acc;
-      }
-
       switch (tagName) {
         case "GPSTimeStamp":
-          const timeStamp = payload.map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
-          acc[tagName] = timeStamp;
+          const timeStamp = data.map((value) => (value < 10 ? `0${value}` : `${value}`)).join(":");
+          acc[tagName] = [timeStamp];
           break;
         case "GPSLongitude":
         case "GPSDestLongitude":
         case "GPSLatitude":
         case "GPSDestLatitude":
-          const [degree, minutes, seconds] = [...payload];
-          acc[tagName] = degree + minutes / 60 + seconds / 3600;
+          const [degree, minutes, seconds] = [...data] as number[];
+          acc[tagName] = [degree + minutes / 60 + seconds / 3600];
           break;
       }
 
