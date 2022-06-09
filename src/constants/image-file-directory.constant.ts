@@ -139,8 +139,6 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0x828f: "BatteryLevel",
   0x8290: "KodakIFD",
   0x8298: "Copyright",
-  0x829a: "ExposureTime",
-  0x829d: "FNumber",
   0x82a5: "MDFileTag",
   0x82a6: "MDScalePixel",
   0x82a7: "MDColorTable",
@@ -181,129 +179,62 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0x84f0: "CMYKEquivalent",
   0x8546: "SEMInfo",
   0x8568: "AFCP_IPTC",
-  0x85b8: "PixelMagicJBIGOptions",
+  0x85b8: "PixelMagicJBIGOptions", // (no, -)
+  0x85d7: "JPLCartoIFD", // (no, -)
   0x85d8: "ModelTransform",
-  0x8602: "WB_GRGBLevels",
+  0x8602: "WB_GRGBLevels", // (no, -)
   0x8606: "LeafData",
   0x8649: "PhotoshopSettings",
   0x8769: "ExifOffset",
   0x8773: "ICC_Profile",
-  0x877f: "TIFF_FXExtensions",
-  0x8780: "MultiProfiles",
-  0x8781: "SharedData",
-  0x8782: "T88Options",
-  0x87ac: "ImageLayer",
+  0x877f: "TIFF_FXExtensions", // (no, -)
+  0x8780: "MultiProfiles", // (no, -)
+  0x8781: "SharedData", // (no, -)
+  0x8782: "T88Options", // (no, -)
+  0x87ac: "ImageLayer", // (no, -)
   0x87af: "GeoTiffDirectory",
   0x87b0: "GeoTiffDoubleParams",
   0x87b1: "GeoTiffAsciiParams",
-  0x8822: "ExposureProgram",
-  0x8824: "SpectralSensitivity",
+  0x87be: "JBIGOptions", // (no, -)
   0x8825: "GPSInfo",
-  0x8827: "ISO",
-  0x8828: "Opto-ElectricConvFactor",
-  0x8829: "Interlace",
-  0x882a: "TimeZoneOffset",
-  0x882b: "SelfTimerMode",
-  0x8830: "SensitivityType",
-  0x8831: "StandardOutputSensitivity",
-  0x8832: "RecommendedExposureIndex",
-  0x8833: "ISOSpeed",
-  0x8834: "ISOSpeedLatitudeyyy",
-  0x8835: "ISOSpeedLatitudezzz",
-  0x885c: "FaxRecvParams",
-  0x885d: "FaxSubAddress",
-  0x885e: "FaxRecvTime",
+  0x8828: "Opto-ElectricConvFactor", // (no, -)
+  0x8829: "Interlace", // (no, -)
+  0x885c: "FaxRecvParams", // (no, -)
+  0x885d: "FaxSubAddress", // (no, -)
+  0x885e: "FaxRecvTime", // (no, -)
   0x888a: "LeafSubIFD",
-  0x9000: "ExifVersion",
-  0x9003: "DateTimeOriginal",
-  0x9004: "CreateDate",
-  0x9101: "ComponentsConfiguration",
-  0x9102: "CompressedBitsPerPixel",
-  0x9201: "ShutterSpeedValue",
-  0x9202: "ApertureValue",
-  0x9203: "BrightnessValue",
-  0x9204: "ExposureCompensation",
-  0x9205: "MaxApertureValue",
-  0x9206: "SubjectDistance",
-  0x9207: "MeteringMode",
-  0x9208: "LightSource",
-  0x9209: "Flash",
-  0x920a: "FocalLength",
-  0x920b: "FlashEnergy",
-  0x920c: "SpatialFrequencyResponse",
-  0x920d: "Noise",
-  0x920e: "FocalPlaneXResolution",
-  0x920f: "FocalPlaneYResolution",
-  0x9210: "FocalPlaneResolutionUnit",
-  0x9211: "ImageNumber",
-  0x9212: "SecurityClassification",
-  0x9213: "ImageHistory",
-  0x9214: "SubjectArea",
-  0x9215: "ExposureIndex",
-  0x9216: "TIFF-EPStandardID",
-  0x9217: "SensingMethod",
-  0x923a: "CIP3DataFile",
-  0x923b: "CIP3Sheet",
-  0x923c: "CIP3Side",
-  0x923f: "StoNits",
-  0x927c: "MakerNote",
-  0x9286: "UserComment",
-  0x9290: "SubSecTime",
-  0x9291: "SubSecTimeOriginal",
-  0x9292: "SubSecTimeDigitized",
-  0x932f: "MSDocumentText",
-  0x9330: "MSPropertySetStorage",
-  0x9331: "MSDocumentTextPosition",
+  0x920b: "FlashEnergy", // Duplicate (no, -)
+  0x920c: "SpatialFrequencyResponse", // Duplicate (no, -)
+  0x920d: "Noise", // Duplicate (no, -)
+  0x920e: "FocalPlaneXResolution", // Duplicate (no, -)
+  0x920f: "FocalPlaneYResolution", // Duplicate (no, -)
+  0x9210: "FocalPlaneResolutionUnit", // Duplicate (no, -)
+  0x9215: "ExposureIndex", // Duplicate (no, -)
+  0x9216: "TIFF-EPStandardID", // Duplicate (no, -)
+  0x9217: "SensingMethod", // Duplicate (no, -)
+  0x923a: "CIP3DataFile", // (no, -)
+  0x923b: "CIP3Sheet", // (no, -)
+  0x923c: "CIP3Side", // (no, -)
+  0x923f: "StoNits", // (no, -)
+  0x932f: "MSDocumentText", // (no, -)
+  0x9330: "MSPropertySetStorage", // (no, -)
+  0x9331: "MSDocumentTextPosition", // (no, -)
   0x935c: "ImageSourceData",
   0x9c9b: "XPTitle",
   0x9c9c: "XPComment",
   0x9c9d: "XPAuthor",
   0x9c9e: "XPKeywords",
   0x9c9f: "XPSubject",
-  0xa000: "FlashpixVersion",
-  0xa001: "ColorSpace",
-  0xa002: "ExifImageWidth",
-  0xa003: "ExifImageHeight",
-  0xa004: "RelatedSoundFile",
   0xa005: "InteropOffset",
-  0xa20b: "FlashEnergy",
-  0xa20c: "SpatialFrequencyResponse",
-  0xa20d: "Noise",
-  0xa20e: "FocalPlaneXResolution",
-  0xa20f: "FocalPlaneYResolution",
-  0xa210: "FocalPlaneResolutionUnit",
-  0xa211: "ImageNumber",
-  0xa212: "SecurityClassification",
-  0xa213: "ImageHistory",
-  0xa214: "SubjectLocation",
-  0xa215: "ExposureIndex",
-  0xa216: "TIFF-EPStandardID",
-  0xa217: "SensingMethod",
-  0xa300: "FileSource",
-  0xa301: "SceneType",
-  0xa302: "CFAPattern",
-  0xa401: "CustomRendered",
-  0xa402: "ExposureMode",
-  0xa403: "WhiteBalance",
-  0xa404: "DigitalZoomRatio",
-  0xa405: "FocalLengthIn35mmFormat",
-  0xa406: "SceneCaptureType",
-  0xa407: "GainControl",
-  0xa408: "Contrast",
-  0xa409: "Saturation",
-  0xa40a: "Sharpness",
+  0xa20c: "SpatialFrequencyResponse", // Duplicate (no, -)
+  0xa20d: "Noise", // Duplicate (no, -)
+  0xa211: "ImageNumber", // Duplicate (no, -)
+  0xa212: "SecurityClassification", // Duplicate (no, -)
+  0xa213: "ImageHistory", // Duplicate (no, -)
+  0xa216: "TIFF-EPStandardID", // Duplicate (no, -)
   0xa40b: "DeviceSettingDescription",
-  0xa40c: "SubjectDistanceRange",
-  0xa420: "ImageUniqueID",
-  0xa430: "OwnerName",
-  0xa431: "SerialNumber",
-  0xa432: "LensInfo",
-  0xa433: "LensMake",
-  0xa434: "LensModel",
-  0xa435: "LensSerialNumber",
   0xa480: "GDALMetadata",
   0xa481: "GDALNoData",
-  0xa500: "Gamma",
   0xafc0: "ExpandSoftware",
   0xafc1: "ExpandLens",
   0xafc2: "ExpandFilm",
@@ -406,23 +337,7 @@ export const TAG_NAME_BY_TAG_ID: Record<number, string> = {
   0xc7a6: "DefaultBlackRender",
   0xc7a7: "NewRawImageDigest",
   0xc7a8: "RawToPreviewGain",
-  0xea1c: "Padding",
-  0xea1d: "OffsetSchema",
-  0xfde8: "OwnerName",
-  0xfde9: "SerialNumber",
-  0xfdea: "Lens",
   0xfe00: "KDC_IFD",
-  0xfe4c: "RawFile",
-  0xfe4d: "Converter",
-  0xfe4e: "WhiteBalance",
-  0xfe51: "Exposure",
-  0xfe52: "Shadows",
-  0xfe53: "Brightness",
-  0xfe54: "Contrast",
-  0xfe55: "Saturation",
-  0xfe56: "Sharpness",
-  0xfe57: "Smoothness",
-  0xfe58: "MoireFilter",
 };
 
 export type SubIFDTag =
@@ -577,4 +492,209 @@ export const GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: GPSTag }> =
   0x001d: "GPSDateStamp",
   0x001e: "GPSDifferential",
   0x001f: "GPSHPositioningError",
+});
+
+export type EXIFTag =
+  | "ExposureTime"
+  | "FNumber"
+  | "ExposureProgram"
+  | "SpectralSensitivity"
+  | "ISO"
+  | "TimeZoneOffset"
+  | "SelfTimerMode"
+  | "SensitivityType"
+  | "StandardOutputSensitivity"
+  | "RecommendedExposureIndex"
+  | "ISOSpeed"
+  | "ISOSpeedLatitudeyyy"
+  | "ISOSpeedLatitudezzz"
+  | "ExifVersion"
+  | "DateTimeOriginal"
+  | "CreateDate"
+  | "GooglePlusUploadCode"
+  | "OffsetTime"
+  | "OffsetTimeOriginal"
+  | "OffsetTimeDigitized"
+  | "ComponentsConfiguration"
+  | "CompressedBitsPerPixel"
+  | "ShutterSpeedValue"
+  | "ApertureValue"
+  | "BrightnessValue"
+  | "ExposureCompensation"
+  | "MaxApertureValue"
+  | "SubjectDistance"
+  | "MeteringMode"
+  | "LightSource"
+  | "Flash"
+  | "FocalLength"
+  | "ImageNumber"
+  | "SecurityClassification"
+  | "ImageHistory"
+  | "SubjectArea"
+  | "MakerNote"
+  | "UserComment"
+  | "SubSecTime"
+  | "SubSecTimeOriginal"
+  | "SubSecTimeDigitized"
+  | "AmbientTemperature"
+  | "Humidity"
+  | "Pressure"
+  | "WaterDepth"
+  | "Acceleration"
+  | "CameraElevationAngle"
+  | "FlashpixVersion"
+  | "ColorSpace"
+  | "ExifImageWidth"
+  | "ExifImageHeight"
+  | "RelatedSoundFile"
+  | "FlashEnergy"
+  | "FocalPlaneXResolution"
+  | "FocalPlaneYResolution"
+  | "FocalPlaneResolutionUnit"
+  | "SubjectLocation"
+  | "ExposureIndex"
+  | "SensingMethod"
+  | "FileSource"
+  | "SceneType"
+  | "CFAPattern"
+  | "CustomRendered"
+  | "ExposureMode"
+  | "WhiteBalance"
+  | "DigitalZoomRatio"
+  | "FocalLengthIn35mmFormat"
+  | "SceneCaptureType"
+  | "GainControl"
+  | "Contrast"
+  | "Saturation"
+  | "Sharpness"
+  | "SubjectDistanceRange"
+  | "ImageUniqueID"
+  | "OwnerName"
+  | "SerialNumber"
+  | "LensInfo"
+  | "LensMake"
+  | "LensModel"
+  | "LensSerialNumber"
+  | "CompositeImage"
+  | "CompositeImageCount"
+  | "CompositeImageExposureTimes"
+  | "Gamma"
+  | "Padding"
+  | "OffsetSchema"
+  | "OwnerName"
+  | "SerialNumber"
+  | "Lens"
+  | "RawFile"
+  | "Converter"
+  | "WhiteBalance"
+  | "Exposure"
+  | "Shadows"
+  | "Brightness"
+  | "Contrast"
+  | "Saturation"
+  | "Sharpness"
+  | "Smoothness"
+  | "MoireFilter";
+
+export const EXIF_TAG_NAME_BY_TAG_ID = Object.freeze<{ [tagNumber: number]: EXIFTag }>({
+  0x829a: "ExposureTime",
+  0x829d: "FNumber",
+  0x8822: "ExposureProgram",
+  0x8824: "SpectralSensitivity",
+  0x8827: "ISO",
+  0x882a: "TimeZoneOffset",
+  0x882b: "SelfTimerMode",
+  0x8830: "SensitivityType",
+  0x8831: "StandardOutputSensitivity",
+  0x8832: "RecommendedExposureIndex",
+  0x8833: "ISOSpeed",
+  0x8834: "ISOSpeedLatitudeyyy",
+  0x8835: "ISOSpeedLatitudezzz",
+  0x9000: "ExifVersion",
+  0x9003: "DateTimeOriginal",
+  0x9004: "CreateDate",
+  0x9009: "GooglePlusUploadCode",
+  0x9010: "OffsetTime",
+  0x9011: "OffsetTimeOriginal",
+  0x9012: "OffsetTimeDigitized",
+  0x9101: "ComponentsConfiguration",
+  0x9102: "CompressedBitsPerPixel",
+  0x9201: "ShutterSpeedValue",
+  0x9202: "ApertureValue",
+  0x9203: "BrightnessValue",
+  0x9204: "ExposureCompensation",
+  0x9205: "MaxApertureValue",
+  0x9206: "SubjectDistance",
+  0x9207: "MeteringMode",
+  0x9208: "LightSource",
+  0x9209: "Flash",
+  0x920a: "FocalLength",
+  0x9211: "ImageNumber",
+  0x9212: "SecurityClassification",
+  0x9213: "ImageHistory",
+  0x9214: "SubjectArea",
+  0x927c: "MakerNote",
+  0x9286: "UserComment",
+  0x9290: "SubSecTime",
+  0x9291: "SubSecTimeOriginal",
+  0x9292: "SubSecTimeDigitized",
+  0x9400: "AmbientTemperature",
+  0x9401: "Humidity",
+  0x9402: "Pressure",
+  0x9403: "WaterDepth",
+  0x9404: "Acceleration",
+  0x9405: "CameraElevationAngle",
+  0xa000: "FlashpixVersion",
+  0xa001: "ColorSpace",
+  0xa002: "ExifImageWidth",
+  0xa003: "ExifImageHeight",
+  0xa004: "RelatedSoundFile",
+  0xa20b: "FlashEnergy",
+  0xa20e: "FocalPlaneXResolution",
+  0xa20f: "FocalPlaneYResolution",
+  0xa210: "FocalPlaneResolutionUnit",
+  0xa214: "SubjectLocation",
+  0xa215: "ExposureIndex",
+  0xa217: "SensingMethod",
+  0xa300: "FileSource",
+  0xa301: "SceneType",
+  0xa302: "CFAPattern",
+  0xa401: "CustomRendered",
+  0xa402: "ExposureMode",
+  0xa403: "WhiteBalance",
+  0xa404: "DigitalZoomRatio",
+  0xa405: "FocalLengthIn35mmFormat",
+  0xa406: "SceneCaptureType",
+  0xa407: "GainControl",
+  0xa408: "Contrast",
+  0xa409: "Saturation",
+  0xa40a: "Sharpness",
+  0xa40c: "SubjectDistanceRange",
+  0xa420: "ImageUniqueID",
+  0xa430: "OwnerName",
+  0xa431: "SerialNumber",
+  0xa432: "LensInfo",
+  0xa433: "LensMake",
+  0xa434: "LensModel",
+  0xa435: "LensSerialNumber",
+  0xa460: "CompositeImage",
+  0xa461: "CompositeImageCount",
+  0xa462: "CompositeImageExposureTimes",
+  0xa500: "Gamma",
+  0xea1c: "Padding",
+  0xea1d: "OffsetSchema",
+  0xfde8: "OwnerName",
+  0xfde9: "SerialNumber",
+  0xfdea: "Lens",
+  0xfe4c: "RawFile",
+  0xfe4d: "Converter",
+  0xfe4e: "WhiteBalance",
+  0xfe51: "Exposure",
+  0xfe52: "Shadows",
+  0xfe53: "Brightness",
+  0xfe54: "Contrast",
+  0xfe55: "Saturation",
+  0xfe56: "Sharpness",
+  0xfe57: "Smoothness",
+  0xfe58: "MoireFilter",
 });

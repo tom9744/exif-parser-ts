@@ -1,4 +1,4 @@
-import { GPSTag, GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
+import { EXIFTag, EXIF_TAG_NAME_BY_TAG_ID, GPSTag, GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { isNumberArray, readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
 import { EntryData, IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
@@ -15,6 +15,7 @@ enum TagMark {
 }
 
 type IFDEntrySummary = { [key: string]: EntryData };
+type EXIFEntrySummary = { [key in EXIFTag]?: EntryData };
 type GPSEntrySummary = { [key in GPSTag]?: EntryData };
 
 /**
@@ -41,11 +42,11 @@ export class ExifData {
     return this.formatEntries(this._IFD1.entries);
   }
 
-  get EXIF(): IFDEntrySummary | null {
+  get EXIF(): EXIFEntrySummary | null {
     if (!this._EXIF?.entries) {
       return null;
     }
-    return this.formatEntries(this._EXIF.entries);
+    return this.formatSubIFDEntries(this._EXIF.entries);
   }
 
   get GPS(): GPSEntrySummary | null {
@@ -116,6 +117,21 @@ export class ExifData {
 
       return acc;
     }, {} as IFDEntrySummary);
+  }
+
+  private formatSubIFDEntries(entries: IIFDEntryModel[]): EXIFEntrySummary {
+    return entries.reduce((acc, entry) => {
+      const tagName = EXIF_TAG_NAME_BY_TAG_ID[entry.tag];
+
+      if (!tagName) {
+        return acc;
+      }
+
+      // TODO: 각 태그 별 데이터 포매팅
+      acc[tagName] = entry.data;
+
+      return acc;
+    }, {} as EXIFEntrySummary);
   }
 
   private formatGPSEntries(entries: IIFDEntryModel[]): GPSEntrySummary {
