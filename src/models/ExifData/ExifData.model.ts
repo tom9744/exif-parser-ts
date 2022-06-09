@@ -1,4 +1,5 @@
-import { EXIFTag, EXIF_TAG_NAME_BY_TAG_ID, GPSTag, GPS_TAG_NAME_BY_TAG_ID, TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
+import { GPSTag, GPS_TAG_NAME_BY_TAG_ID } from "../../constants/gps_tags.constant";
+import { TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { isNumberArray, readDataViewAsString } from "../../utils";
 import { IFD0 } from "./ImageFileDirectory/IFD0.model";
 import { EntryData, IIFDEntryModel } from "./ImageFileDirectory/IFDEntryFactory";
