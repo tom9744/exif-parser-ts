@@ -1,3 +1,4 @@
+import { EXIFTag, EXIF_TAG_NAME_BY_TAG_ID } from "../../constants/exif_tags.constant";
 import { GPSTag, GPS_TAG_NAME_BY_TAG_ID } from "../../constants/gps_tags.constant";
 import { TAG_NAME_BY_TAG_ID } from "../../constants/image-file-directory.constant";
 import { isNumberArray, readDataViewAsString } from "../../utils";
