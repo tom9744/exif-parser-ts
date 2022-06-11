@@ -1,4 +1,4 @@
-export type GPSTag =
+export type GPSInfoTag =
   | "GPSVersionID"
   | "GPSLatitudeRef"
   | "GPSLatitude"
@@ -32,7 +32,7 @@ export type GPSTag =
   | "GPSDifferential"
   | "GPSHPositioningError";
 
-export const GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: GPSTag }> = Object.freeze({
+export const IFD_GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: GPSInfoTag }> = Object.freeze({
   0x0000: "GPSVersionID",
   0x0001: "GPSLatitudeRef",
   0x0002: "GPSLatitude",
@@ -49,6 +49,7 @@ export const GPS_TAG_NAME_BY_TAG_ID: Readonly<{ [tagNumber: number]: GPSTag }> =
   0x000d: "GPSSpeed",
   0x000e: "GPSTrackRef",
   0x000f: "GPSTrack",
+
   0x0010: "GPSImgDirectionRef",
   0x0011: "GPSImgDirection",
   0x0012: "GPSMapDatum",
