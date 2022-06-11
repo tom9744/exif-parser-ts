@@ -1,15 +1,24 @@
 {
-  "name": "typesrcipt-exif-parser",
-  "version": "1.0.0",
-  "description": "EXIF metadata extractor for typescript",
+  "name": "exif-parser-ts",
+  "version": "0.0.1",
+  "description": "EXIF parser written in typescript",
   "main": "dist/index.js",
-  "author": "Junyoung Yang",
-  "license": "MIT",
   "types": "dist/index.d.ts",
+  "author": "Junyoung Yang <catfishdev9601@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "build": "npm test && rm -rf ./dist && rollup -c && rm -rf ./dist/types",
     "test": "jest --config jest.config.json"
   },
+  "keywords": [
+    "gps",
+    "gps-info",
+    "gps-medadata",
+    "exif",
+    "exif-parser",
+    "exif-parser-ts",
+    "jpeg"
+  ],
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
     "@types/jest": "^27.5.0",
