@@ -12,7 +12,13 @@ npm run install exif-parser-ts
 
 ## 사용법
 
-본 라이브러리의 유일한 공개 함수 `extractExifTags`를 호출해야 합니다. 함수 호출 시, `<input>` 태그 등을 통해 전달받은 `File` 타입의 데이터를 인자로 전달합니다.
+가장 먼저, 본 라이브러리의 유일한 공개 함수, `extractExifTags`를 임포트합니다.
+
+```typescript
+import { extractExifTags } from "exif-parser-ts";
+```
+
+`<input>` 태그 등을 통해 전달받은 `File` 타입의 데이터를 인자로 전달해 앞서 임포트 한 함수를 호출합니다.
 
 `extractExifTags`는 비동기 함수이며, 아래의 두 방법으로 호출할 수 있습니다.
 
@@ -27,8 +33,6 @@ extractExifTags(file)
 ### `async/await` 구문을 사용하는 방법
 
 ```typescript
-import { extractExifTags } from "exif-parser-ts";
-
 async function foo() {
   const metadata = await extractExifTags(file);
 }
